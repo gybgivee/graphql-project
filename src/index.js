@@ -6,13 +6,20 @@ import App from './App';
 import { UserProvider } from './contexts/user.context';
 import { CategoriesProvider } from './contexts/categories.context';
 import { CartProvider } from './contexts/cart.context';
-
+import {ApolloClient,InMemoryCache,ApolloProvider} from "@apollo/client"
 import './index.scss';
+
+//when query graphQl will send backt the data and store it in cache so the next query if it the same result, willl retrieve it from cache
+const client = new ApolloClient({
+  uri: 'https://crwn-clothing.com/',
+  cache: new InMemoryCache()
+});
 
 const rootElement = document.getElementById('root');
 
 render(
   <React.StrictMode>
+    <ApolloProvider client={client}>
     <BrowserRouter>
       <UserProvider>
         <CategoriesProvider>
@@ -22,6 +29,7 @@ render(
         </CategoriesProvider>
       </UserProvider>
     </BrowserRouter>
+    </ApolloProvider>
   </React.StrictMode>,
   rootElement
 );
